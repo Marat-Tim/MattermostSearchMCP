@@ -33,7 +33,7 @@ def register_in(mcp: FastMCP):
                     "reply_count": el["reply_count"],
                 }
             )
-        result_json = json.dumps(result)
+        result_json = json.dumps(result, ensure_ascii=False)
         log_to_file(result_json)
         return result_json
 
@@ -49,11 +49,11 @@ def register_in(mcp: FastMCP):
         """
         try:
             return _search(terms, page)
-        except RateLimitException:
+        except RateLimitException as e:
             return json.dumps(
                 {
                     "status": "error",
                     "error": "Rate limit exceeded",
-                    "retry_after_seconds": 2
+                    "retry_after_seconds": e.period_remaining
                 }
             )
