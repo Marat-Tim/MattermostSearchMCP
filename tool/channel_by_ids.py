@@ -1,12 +1,11 @@
 from mattermost_api_reference_client.api.channels import get_channels_for_user
-from mattermost_api_reference_client.models import SearchPostsBody
 
 from mm_search_mcp import mcp
-from mm import client, get_team_id
+from mm import client
 
 
 @mcp.tool
-def my_channels():
+def channel_by_ids(ids: list[str]):
     rs = get_channels_for_user.sync(
         "me",
         client=client,
@@ -17,6 +16,5 @@ def my_channels():
             "name": el.name,
             "display_name": el.display_name,
         }
-        for el in rs
+        for el in rs if rs.id in ids
     ]
-

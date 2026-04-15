@@ -1,15 +1,20 @@
-from fastmcp import FastMCP
+from mattermost_api_reference_client.api.channels import get_channels_for_user
 
-from util import get_channels
+from mm_search_mcp import mcp
+from mm import client
 
-tool_name = "Get channel name by display name"
 
-
-def register_in(mcp: FastMCP):
-    @mcp.tool(description=tool_name)
-    def channel_by_display_name(display_name: str):
-        channels = get_channels()
-        for channel in channels:
-            if channel["display_name"] == display_name:
-                return channel
-        return None
+@mcp.tool
+def channel_by_display_name(display_name: str):
+    rs = get_channels_for_user.sync(
+        "me",
+        client=client,
+    )
+    for el in rs:
+        if el.display_name == display_name:
+            return {
+                "id": el.id,
+                "name": el.name,
+                "display_name": el.display_name,
+            }
+    return "Not found"

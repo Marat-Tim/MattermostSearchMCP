@@ -1,26 +1,19 @@
-import json
+from mattermost_api_reference_client.api.posts import get_post_thread
 
-from fastmcp import FastMCP
-
-from util import session, get_mm_url, log_to_file
-
-tool_name = "Get thread"
+from mm_search_mcp import mcp
+from mm import client
 
 
-def register_in(mcp: FastMCP):
-    @mcp.tool(description=tool_name)
-    def thread(post_id: str) -> str:
-        """
-        :param post_id: id of any message from thread
-        """
-        rs = session.get(f"{get_mm_url()}/posts/{post_id}/thread").json()
-        log_to_file(rs)
-        result = json.dumps(
-            [
-                {key: el[key] for key in ["message", "user_id"]}
-                for el in sorted(rs["posts"].values(), key=lambda p: (p["create_at"], p["id"]))
-            ],
-            ensure_ascii=False
-        )
-        log_to_file(result)
-        return result
+@mcp.tool
+def thread(post_id: str):
+    rs = get_post_thread.sync(
+        post_id,
+        client=client
+    )
+    return [
+        {
+            "message": post.message,
+            "user_id": post.user_id,
+        }
+        for post in sorted(rs.posts.additional_properties.values(), key=lambda p: (p.create_at, p.id))
+    ]
