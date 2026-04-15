@@ -1,8 +1,7 @@
 from mattermost_api_reference_client.api.channels import get_channels_for_user
-from mattermost_api_reference_client.models import SearchPostsBody
 
+from mm import client
 from mm_search_mcp import mcp
-from mm import client, get_team_id
 
 
 @mcp.tool
@@ -13,7 +12,6 @@ def my_channels():
     )
     return [
         {
-            "id": el.id,
             "name": el.name,
             "display_name": el.display_name,
         }
