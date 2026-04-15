@@ -16,5 +16,5 @@ def channel_by_ids(ids: list[str]):
             "name": el.name,
             "display_name": el.display_name,
         }
-        for el in rs if rs.id in ids
+        for el in rs if el.id in ids
     ]

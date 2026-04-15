@@ -13,7 +13,7 @@ client = AuthenticatedClient(
     headers={
         "x-csrf-token": str(os.getenv("MMCSRF")),
     },
-    verify_ssl=False
+    verify_ssl="/Users/ruabgmj/Developer/raif/ruabgmj/mm-search-mcp/certs/mattermost.raiffeisen.ru.pem"
 )
 
 def get_team_id() -> str:
