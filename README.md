@@ -26,6 +26,8 @@ If you have problem with ssl certificates you can set MM_VERIFY_SSL to
                       
 ## Install
 
+### Global
+
 Run outside of venv:
 ```shell
 pip install git+https://github.com/Marat-Tim/MattermostSearchMCP.git
@@ -33,8 +35,25 @@ pip install git+https://github.com/Marat-Tim/MattermostSearchMCP.git
 
 Then run
 ```shell
-mm-search-mcp --help
+mm-search-mcp check
 ```
+
+And add
+```json
+{
+  "mcp": {
+    "mm-search": {
+      "type": "local",
+      "command": [
+        "mm-search-mcp",
+        "run"
+      ]
+    }
+  }
+}
+```
+
+### Isolated
 
 If you don't want download global packages you can check environment via
 ```shell
@@ -44,14 +63,16 @@ And then add
 ```json
 {
   "mcp": {
-    "type": "local",
-    "command": [
-      "uvx", 
-      "--from", 
-      "git+https://github.com/Marat-Tim/MattermostSearchMCP.git", 
-      "mm-search-mcp", 
-      "run"
-    ]
+    "mm-search": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "git+https://github.com/Marat-Tim/MattermostSearchMCP.git",
+        "mm-search-mcp",
+        "run"
+      ]
+    }
   }
 }
 ```
