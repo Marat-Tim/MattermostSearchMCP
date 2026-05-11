@@ -4,7 +4,7 @@ from mattermost_api_reference_client.api.channels import get_channels_for_user, 
 from mattermost_api_reference_client.models import SearchPostsBody
 
 from mm_search_mcp import mcp
-from mm import client, get_team_id
+from mm import client, get_team_id, link_to
 
 
 def search_impl(terms: str, page: int):
@@ -28,7 +28,6 @@ def search_impl(terms: str, page: int):
             "username": user.username,
             "first_name": user.first_name,
             "last_name": user.last_name,
-            "email": user.email,
             "nickname": user.nickname,
         }
         for user in users
@@ -63,6 +62,7 @@ def search_impl(terms: str, page: int):
     return [
         {
             "thread_id": el.id,
+            "thread_link": link_to(el.id),
             "user": users_map[el.user_id],
             "channel": channels_map[el.channel_id],
             "message": el.message,

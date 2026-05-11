@@ -1,4 +1,4 @@
-from mm import get_team_id
+from mm import get_team_id, get_team_name
 from mm_search_mcp import mcp
 import typer
 from config import *
@@ -36,10 +36,11 @@ def check():
         typer.echo("No auth provided")
         raise typer.Exit(1)
     typer.echo("Checking Mattermost API:")
-    typer.echo("get_team_id(): ", nl=False)
+    typer.echo("get_team(): ", nl=False)
     try:
         team_id = get_team_id()
-        typer.echo(f"working good, team_id={team_id}")
+        team_name = get_team_name()
+        typer.echo(f"working good, id={team_id}, name={team_name}")
     except Exception as e:
         typer.echo(f"call failed, {e}")
         raise typer.Exit(1)

@@ -2,6 +2,8 @@ from functools import cache
 
 from mattermost_api_reference_client import AuthenticatedClient
 from mattermost_api_reference_client.api.teams import get_all_teams
+from mattermost_api_reference_client.models import Team
+
 from config import *
 
 client = None
@@ -35,8 +37,17 @@ if client is not None:
     else:
         client._verify_ssl = val
 
-
 @cache
-def get_team_id() -> str:
+def get_team() -> Team:
     teams = get_all_teams.sync(client=client)
-    return teams[0].id
+    return teams[0]
+
+
+def get_team_id() -> str:
+    return get_team().id
+
+def get_team_name() -> str:
+    return get_team().name
+
+def link_to(post_id: str) -> str:
+    return f"{mm_url.value()}/{get_team_name()}/pl/{post_id}"

@@ -2,7 +2,8 @@ from mattermost_api_reference_client.api.posts import get_post_thread
 from mattermost_api_reference_client.api.users import get_users_by_ids
 
 from mm_search_mcp import mcp
-from mm import client
+from mm import client, link_to
+
 
 def thread_impl(thread_id: str):
     rs = get_post_thread.sync(thread_id, client=client)
@@ -22,6 +23,7 @@ def thread_impl(thread_id: str):
     }
     return [
         {
+            "link": link_to(post.id),
             "message": post.message,
             "user": users_map[post.user_id],
         }
