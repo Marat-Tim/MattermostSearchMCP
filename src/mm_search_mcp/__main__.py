@@ -1,3 +1,5 @@
+import browsercookie
+
 from mm_search_mcp.mm import get_team_id, get_team_name
 from mm_search_mcp.server import mcp
 import typer
@@ -24,6 +26,16 @@ cli = typer.Typer(
     {variables_status()}
     """,
 )
+
+@cli.command()
+def extract_auth_from_browser():
+    """
+    Extract MMAUTHTOKEN, MMUSERID, MMCSRF from the browser cookies and print them
+    """
+    for cookie in browsercookie.load():
+        if cookie.name in {"MMAUTHTOKEN", "MMUSERID", "MMCSRF"}:
+            typer.echo(f'export {cookie.name}="{cookie.value}"')
+    typer.echo("Add this variables to your config(~/.zshrc or ~/.bash_profile)")
 
 
 @cli.command()
