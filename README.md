@@ -32,12 +32,14 @@ Run outside of venv:
 ```shell
 pip install git+https://github.com/Marat-Tim/MattermostSearchMCP.git
 ```
-
 Then run
+```shell
+mm-search-mcp extract-auth-from-browser
+```
+Add printed variables to config and check
 ```shell
 mm-search-mcp check
 ```
-
 And add
 ```json
 {
@@ -55,7 +57,10 @@ And add
 
 ### Isolated
 
-If you don't want download global packages you can check environment via
+If you don't want download global packages you can use
+```shell
+uvx --from git+https://github.com/Marat-Tim/MattermostSearchMCP.git mm-search-mcp extract-auth-from-browser
+```
 ```shell
 uvx --from git+https://github.com/Marat-Tim/MattermostSearchMCP.git mm-search-mcp check
 ```
