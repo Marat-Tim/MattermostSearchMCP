@@ -1,10 +1,10 @@
-from mm import get_team_id, get_team_name
-from mm_search_mcp import mcp
+from mm_search_mcp.mm import get_team_id, get_team_name
+from mm_search_mcp.server import mcp
 import typer
-from config import *
-from tool import *
-from tool.search import search_impl
-from tool.thread import thread_impl
+from mm_search_mcp.config import *
+from mm_search_mcp.tool import *
+from mm_search_mcp.tool.search import search_impl
+from mm_search_mcp.tool.thread import thread_impl
 
 cli = typer.Typer(
     no_args_is_help=True,
@@ -22,7 +22,7 @@ cli = typer.Typer(
     - Filepath with certificate
     
     {variables_status()}
-    """
+    """,
 )
 
 
@@ -73,5 +73,9 @@ def run():
     mcp.run()
 
 
-if __name__ == "__main__":
+def main():
     cli()
+
+
+if __name__ == "__main__":
+    main()

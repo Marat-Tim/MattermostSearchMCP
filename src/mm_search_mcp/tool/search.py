@@ -1,10 +1,13 @@
 from mattermost_api_reference_client.api.posts import search_posts
 from mattermost_api_reference_client.api.users import get_users_by_ids
-from mattermost_api_reference_client.api.channels import get_channels_for_user, get_channel_members
+from mattermost_api_reference_client.api.channels import (
+    get_channels_for_user,
+    get_channel_members,
+)
 from mattermost_api_reference_client.models import SearchPostsBody
 
-from mm_search_mcp import mcp
-from mm import client, get_team_id, link_to
+from mm_search_mcp.server import mcp
+from mm_search_mcp.mm import client, get_team_id, link_to
 
 
 def search_impl(terms: str, page: int):
@@ -15,13 +18,13 @@ def search_impl(terms: str, page: int):
             is_or_search=False,
             page=page,
             per_page=30,
-            time_zone_offset=10800
+            time_zone_offset=10800,
         ),
-        client=client
+        client=client,
     )
     users = get_users_by_ids.sync(
         body=[el.user_id for el in rs.posts.additional_properties.values()],
-        client=client
+        client=client,
     )
     users_map = {
         user.id: {
@@ -32,30 +35,31 @@ def search_impl(terms: str, page: int):
     }
     channels = get_channels_for_user.sync("me", client=client)
     channels_map = {
-        channel.id:
-            {
-                "name": channel.name,
-                "display_name": ", ".join([
+        channel.id: {
+            "name": channel.name,
+            "display_name": ", ".join(
+                [
                     user.first_name + " " + user.last_name
                     for user in get_users_by_ids.sync(
                         body=[
                             str(member.user_id)
                             for member in get_channel_members.sync(
-                                channel.id,
-                                client=client
+                                channel.id, client=client
                             )
                         ],
-                        client=client
+                        client=client,
                     )
-                ]),
-            }
-            if channel.type_ == "D" else
-            {
-                "name": channel.name,
-                "display_name": channel.display_name,
-            }
+                ]
+            ),
+        }
+        if channel.type_ == "D"
+        else {
+            "name": channel.name,
+            "display_name": channel.display_name,
+        }
         for channel in channels
-        if channel.id in [post.channel_id for post in rs.posts.additional_properties.values()]
+        if channel.id
+        in [post.channel_id for post in rs.posts.additional_properties.values()]
     }
     return [
         {
@@ -65,8 +69,10 @@ def search_impl(terms: str, page: int):
             "channel": channels_map[el.channel_id],
             "message": el.message,
             "reply_count": el.to_dict()["reply_count"],
-        } for el in rs.posts.additional_properties.values()
+        }
+        for el in rs.posts.additional_properties.values()
     ]
+
 
 @mcp.tool
 def search(terms: str, page: int):
