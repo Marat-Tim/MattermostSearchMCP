@@ -7,16 +7,7 @@ from mm_search_mcp import mcp
 from mm import client, get_team_id
 
 
-@mcp.tool
-def search(terms: str, page: int):
-    """
-    :param terms: The search terms as inputed by the user.
-        To search for posts from a user include from:someusername, using a user's username.
-        To search in a specific channel include in:somechannel,
-        using the channel name
-        (not the display name, you can get channel name using tool 'Get channel name by display name').
-    :param page: The page number to search in. Starts with 0.
-    """
+def search_impl(terms: str, page: int):
     rs = search_posts.sync(
         get_team_id(),
         body=SearchPostsBody(
@@ -78,3 +69,15 @@ def search(terms: str, page: int):
             "reply_count": el.to_dict()["reply_count"],
         } for el in rs.posts.additional_properties.values()
     ]
+
+@mcp.tool
+def search(terms: str, page: int):
+    """
+    :param terms: The search terms as inputed by the user.
+        To search for posts from a user include from:someusername, using a user's username.
+        To search in a specific channel include in:somechannel,
+        using the channel name
+        (not the display name, you can get channel name using tool 'Get channel name by display name').
+    :param page: The page number to search in. Starts with 0.
+    """
+    return search_impl(terms, page)
