@@ -55,7 +55,7 @@ And add
 }
 ```
 
-### Isolated
+### Isolated(may works slow)
 
 If you don't want download global packages you can use
 ```shell
