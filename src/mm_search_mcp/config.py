@@ -8,10 +8,10 @@ class EnvVar:
         self.default = default
 
     def value(self) -> str:
-        if self.default is not None:
-            return self.default
         var = os.getenv(self.name)
         if var is None:
+            if self.default is not None:
+                return self.default
             raise Exception(f"Env var {self.name} not defined")
         return var
 
@@ -23,7 +23,7 @@ class EnvVar:
 
     def __str__(self) -> str:
         if self.exists():
-            return f"{self.name}=`{"***" if self.private else self.value()}`"
+            return f"{self.name}=`{"***" if self.private else self.value()}`{" (default value)" if self.default else ""}"
         else:
             return f"{self.name} is not defined"
 
