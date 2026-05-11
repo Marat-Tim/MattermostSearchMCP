@@ -22,6 +22,8 @@ def search_impl(terms: str, page: int):
         ),
         client=client,
     )
+    if len(rs.posts.additional_properties) == 0:
+        return []
     users = get_users_by_ids.sync(
         body=[el.user_id for el in rs.posts.additional_properties.values()],
         client=client,
