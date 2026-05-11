@@ -26,7 +26,8 @@ if is_official_active():
 if client is not None:
     val = mm_verify_ssl.value()
     if val == "Raif_Default":
-        client._verify_ssl = "certs/mattermost.raiffeisen.ru.pem"
+        from raif_ssl import context
+        client._verify_ssl = context
     elif val.upper() == "TRUE":
         client._verify_ssl = True
     elif val.upper() == "FALSE":

@@ -1,4 +1,6 @@
------BEGIN CERTIFICATE-----
+import ssl
+
+ca_cert_str = """-----BEGIN CERTIFICATE-----
 MIIGfTCCBWWgAwIBAgIMAikrERy06NsENnTWMA0GCSqGSIb3DQEBCwUAMFMxCzAJ
 BgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSkwJwYDVQQDEyBH
 bG9iYWxTaWduIEdDQyBSMyBEViBUTFMgQ0EgMjAyMDAeFw0yNTA0MjkwODE0MTNa
@@ -83,4 +85,7 @@ jjM5RcOO5LlXbKr8EpbsU8Yt5CRsuZRj+9xTaGdWPoO4zzUhw8lo/s7awlOqzJCK
 mcIfeg7jLQitChws/zyrVQ4PkX4268NXSb7hLi18YIvDQVETI53O9zJrlAGomecs
 Mx86OyXShkDOOyyGeMlhLxS67ttVb9+E7gUJTb0o2HLO02JQZR7rkpeDMdmztcpH
 WD9f
------END CERTIFICATE-----
+-----END CERTIFICATE-----"""
+
+context = ssl.create_default_context()
+context.load_verify_locations(cadata=ca_cert_str)
