@@ -45,7 +45,13 @@ And then add
 {
   "mcp": {
     "type": "local",
-    "command": "uvx --from git+https://github.com/Marat-Tim/MattermostSearchMCP.git mm-search-mcp run"
+    "command": [
+      "uvx", 
+      "--from", 
+      "git+https://github.com/Marat-Tim/MattermostSearchMCP.git", 
+      "mm-search-mcp", 
+      "run"
+    ]
   }
 }
 ```
