@@ -26,6 +26,8 @@ If you have problem with ssl certificates you can set MM_VERIFY_SSL to
                       
 ## Install
 
+Requires python 3.10+
+
 ### Global
 
 Run outside of venv:
