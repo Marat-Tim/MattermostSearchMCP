@@ -1,3 +1,4 @@
+import traceback
 from datetime import datetime
 
 from mattermost_api_reference_client.api.posts import search_posts
@@ -89,4 +90,10 @@ def search(terms: str, page: int):
         (not the display name, you can get channel name using tool 'Get channel name by display name').
     :param page: The page number to search in. Starts with 0.
     """
-    return search_impl(terms, page)
+    try:
+        return search_impl(terms, page)
+    except Exception as e:
+        return {
+            "error": str(e),
+            "stacktrace": traceback.format_exc(),
+        }

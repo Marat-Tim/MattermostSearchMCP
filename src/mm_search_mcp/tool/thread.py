@@ -1,3 +1,4 @@
+import traceback
 from datetime import datetime
 
 from mattermost_api_reference_client.api.posts import get_post_thread
@@ -38,4 +39,10 @@ def thread_impl(thread_id: str):
 
 @mcp.tool
 def thread(thread_id: str):
-    return thread_impl(thread_id)
+    try:
+        return thread_impl(thread_id)
+    except Exception as e:
+        return {
+            "error": str(e),
+            "stacktrace": traceback.format_exc(),
+        }
