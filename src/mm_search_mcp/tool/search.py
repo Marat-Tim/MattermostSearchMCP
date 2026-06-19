@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from mattermost_api_reference_client.api.posts import search_posts
 from mattermost_api_reference_client.api.users import get_users_by_ids
 from mattermost_api_reference_client.api.channels import (
@@ -70,6 +72,7 @@ def search_impl(terms: str, page: int):
             "user": users_map[el.user_id],
             "channel": channels_map[el.channel_id],
             "message": el.message,
+            "date": datetime.fromtimestamp(el.create_at / 1000.0),
             "reply_count": el.to_dict()["reply_count"],
         }
         for el in rs.posts.additional_properties.values()

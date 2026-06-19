@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from mattermost_api_reference_client.api.posts import get_post_thread
 from mattermost_api_reference_client.api.users import get_users_by_ids
 
@@ -26,6 +28,7 @@ def thread_impl(thread_id: str):
             "link": link_to(post.id),
             "message": post.message,
             "user": users_map[post.user_id],
+            "date": datetime.fromtimestamp(post.create_at / 1000.0),
         }
         for post in sorted(
             rs.posts.additional_properties.values(), key=lambda p: (p.create_at, p.id)
